@@ -1,10 +1,10 @@
 # Unicorn Store
 
-Rowan Miller presents his **UnicornStore** sample at **Ignite 2015**. Watch his session [here](https://channel9.msdn.com/Events/Ignite/2015/BRK3727) to learn about the present state of Entity Framework 7 (EF7) and the range of platforms and technologies in which it can play a productive part.
+Rowan Miller presented his **UnicornStore** sample at **Ignite 2015**. Watch his session [here](https://channel9.msdn.com/Events/Ignite/2015/BRK3727) to learn about the present state of Entity Framework 7 (EF7) and the range of platforms and technologies in which it can play a productive part.
 
 [Rowan's source repository on github](https://github.com/rowanmiller/UnicornStore) is split into a "StartingSource" and "CompletedSource" folders. Each of these folders contains four projects.
 
-This document describes the **UnicornStore* MVC Web App** project in the "CompletedSource" folder.
+This document describes the **UnicornStore MVC Web App** project within the "CompletedSource" folder.
 
 ## Prerequisites
 
@@ -29,11 +29,11 @@ The connection string (in *config.json*) points to a localDb SQL Server named `(
 
 * Clone the Unicorn demo repository: `git clone https://github.com/rowanmiller/UnicornStore.git`
 
-* Add a *secrets.json* file to the UnicoreStore project directory. **[To be explained]**
+* Add a *secrets.json* file to the UnicoreStore project directory. **(to be explained)**
 
 ## Try it
 
-You'll be working with the ASP.NET web app in the "Completed source". 
+You'll be working with the ASP.NET web app in the "CompletedSource" folder. 
 
 You can run it from VS2015 or from the command line 
 
