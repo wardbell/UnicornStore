@@ -98,17 +98,18 @@ namespace UnicornStore
             // services.AddWebApiConventions();
 
             #region WB: Dependency Inject Demo
-            /////// WB: Dependency Injection Demo //////////
 
-            //services.AddInstance<IFoo>(new Foo());    // Singleton with immediately defined instance
-            //services.AddInstance<IFoo>(new Foo());    // Singleton with immediately defined instance that replaces the other one
+            services.AddSingleton<IFoo, Foo>();          // Singleton associating interface w/ a injectable, single-ctor type
+            //services.AddSingleton<IFoo>(Foo.FooFactory); // Singleton w/ service locator factory
 
-            services.AddSingleton<IFoo>(Foo.FooFactory); // Singleton w/ factory; factory invoked if/when service requested
-            //services.AddScoped<IFoo>(Foo.FooFactory);  // Scoped (per request) w/ factory
+            //services.AddInstance<IFoo>(new Foo());       // Singleton with immediately-defined instance
+            //services.AddInstance<IFoo>(new Foo());       // Singleton with immediately-defined instance that replaces the first one
 
-            // When invoked, DI creates UnicornStoreContext with its injecteds
+            //services.AddScoped<IFoo>(Foo.FooFactory);    // Scoped (per request) w/ factory
+
+            // DI creates UnicornStoreContext with its injecteds
             services.AddScoped<IUnicornStoreContext>(_ => _.GetService<UnicornStoreContext>());
-            /////////////////////////
+
             #endregion  
         }
 

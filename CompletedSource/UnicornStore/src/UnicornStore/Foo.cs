@@ -14,18 +14,18 @@ namespace UnicornStore
         public static IFoo FooFactory(System.IServiceProvider serviceProvider)
         {
             var loggerFactory = serviceProvider.GetService<ILoggerFactory>();
-            if (loggerFactory != null)
-            {
-                var logger = loggerFactory.CreateLogger("fooFactory");
-                logger.LogWarning("Got me a Foo provider!");
-            }
-            return new Foo();
+            return new Foo(loggerFactory);
         }
 
         static int counter = 0;
 
-        public Foo()
+        public Foo(ILoggerFactory loggerFactory = null)
         {
+            if (loggerFactory != null)
+            {
+                var logger = loggerFactory.CreateLogger("Foo");
+                logger.LogWarning("Got me a Foo provider!");
+            }
             Name = "Dan Foo " + counter++;
         }
 

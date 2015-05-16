@@ -1,11 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Framework.DependencyInjection;
-using Microsoft.Framework.Internal;
 using Microsoft.Framework.OptionsModel;
-using Newtonsoft.Json.Serialization;
 using UnicornStore.AspNet.Models.UnicornStore;
 
 namespace UnicornStore.AspNet.Controllers
