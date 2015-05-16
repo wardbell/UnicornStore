@@ -5,7 +5,7 @@ using Microsoft.Data.Entity.Infrastructure;
 
 namespace UnicornStore.AspNet.Models.UnicornStore
 {
-    public class UnicornStoreContext : DbContext
+    public class UnicornStoreContext : DbContext, IUnicornStoreContext
     {
         public UnicornStoreContext(DbContextOptions<UnicornStoreContext> options)
             : base(options)

@@ -3,10 +3,12 @@ using Microsoft.AspNet.Diagnostics;
 using Microsoft.AspNet.Diagnostics.Entity;
 using Microsoft.AspNet.Hosting;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Mvc;
 using Microsoft.Data.Entity;
 using Microsoft.Framework.ConfigurationModel;
 using Microsoft.Framework.DependencyInjection;
 using Microsoft.Framework.Logging;
+using Newtonsoft.Json.Serialization;
 using UnicornStore.AspNet.Models.Identity;
 using UnicornStore.AspNet.Models.UnicornStore;
 using UnicornStore.Logging;
@@ -21,7 +23,7 @@ namespace UnicornStore
             // Setup configuration sources.
             var configuration = new Configuration()
                 .AddJsonFile("config.json")
-                .AddJsonFile("secrets.json")
+                .AddJsonFile("secrets.json") // DOESN'T EXIST IN REPO
                 .AddJsonFile($"config.{env.EnvironmentName}.json", optional: true);
 
             if (env.IsEnvironment("Development"))
@@ -35,13 +37,16 @@ namespace UnicornStore
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; set; }
+        private IConfiguration Configuration { get; set; }
+
+
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             // Add Application settings to the services container.
             services.Configure<AppSettings>(Configuration.GetSubKey("AppSettings"));
+
 
             // Add EF services to the services container.
             services.AddEntityFramework()
@@ -68,16 +73,49 @@ namespace UnicornStore
                 options.ClientSecret = Configuration.Get("secrets:google:clientSecret");
             });
 
-            // Add MVC services to the services container.
+            // Add and configure MVC services to the services container.
             services.AddMvc();
+
+            #region Global JSON Serialization Configuration
+            // Could configure JSON serialization for entire app
+            // Perhaps we can't be sure that all controllers want the same thing.
+            // See ProductsController for per-request configuration.
+            //services.Configure<MvcOptions>( options =>
+            //{
+            //    var jsonOutputFormatter = new JsonOutputFormatter();
+            //    jsonOutputFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            //    jsonOutputFormatter.SerializerSettings.DefaultValueHandling = Newtonsoft.Json.DefaultValueHandling.Ignore;
+            //    jsonOutputFormatter.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.Objects;
+            //    jsonOutputFormatter.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore; // Employee.Manager
+
+            //    options.OutputFormatters.RemoveTypesOf<JsonOutputFormatter>();
+            //    options.OutputFormatters.Insert(0, jsonOutputFormatter);
+            //});
+            #endregion
 
             // Uncomment the following line to add Web API services which makes it easier to port Web API 2 controllers.
             // You will also need to add the Microsoft.AspNet.Mvc.WebApiCompatShim package to the 'dependencies' section of project.json.
             // services.AddWebApiConventions();
+
+            #region WB: Dependency Inject Demo
+            /////// WB: Dependency Injection Demo //////////
+
+            //services.AddInstance<IFoo>(new Foo());    // Singleton with immediately defined instance
+            //services.AddInstance<IFoo>(new Foo());    // Singleton with immediately defined instance that replaces the other one
+
+            services.AddSingleton<IFoo>(Foo.FooFactory); // Singleton w/ factory; factory invoked if/when service requested
+            //services.AddScoped<IFoo>(Foo.FooFactory);  // Scoped (per request) w/ factory
+
+            // When invoked, DI creates UnicornStoreContext with its injecteds
+            services.AddScoped<IUnicornStoreContext>(_ => _.GetService<UnicornStoreContext>());
+            /////////////////////////
+            #endregion  
         }
 
+
+
         // Configure is called after ConfigureServices is called.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerfactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerfactory, IFoo foo)
         {
             // Configure the HTTP request pipeline.
 
@@ -123,6 +161,10 @@ namespace UnicornStore
                 // Uncomment the following line to add a route for porting Web API 2 controllers.
                 // routes.MapWebApiRoute("DefaultApi", "api/{controller}/{id?}");
             });
+
+
         }
+
     }
+
 }

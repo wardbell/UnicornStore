@@ -38,6 +38,8 @@ namespace UnicornStore.AspNet.Models.Identity
 
                 foreach (var admin in adminEmails)
                 {
+                    if (admin == null) continue;
+
                     var user = userManager.FindByEmailAsync(admin).Result;
                     if (user != null)
                     {
