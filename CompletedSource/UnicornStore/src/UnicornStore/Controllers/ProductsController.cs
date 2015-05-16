@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNet.Mvc;
-using Microsoft.Framework.DependencyInjection;
+using Microsoft.Framework.DependencyInjection; // needed for other way to get MvcOptions
 using Microsoft.Framework.OptionsModel;
+using Newtonsoft.Json.Serialization;
 using UnicornStore.AspNet.Models.UnicornStore;
 
 namespace UnicornStore.AspNet.Controllers
@@ -12,21 +13,14 @@ namespace UnicornStore.AspNet.Controllers
     public class ProductsController : Controller
     {
         private IUnicornStoreContext db;
-        private IFoo Foo {get;} 
+        private IFoo Foo {get;}
+        private MvcOptions MvcOptions { get; set; }
 
-        public ProductsController(IUnicornStoreContext dbContext, IFoo foo = null)
+        public ProductsController(IUnicornStoreContext dbContext, IOptions<MvcOptions> mvcOptions, IFoo foo)
         {
             db = dbContext;
             Foo = foo;
-        }
-
-        public override void OnActionExecuting(ActionExecutingContext context)
-        {
-            var optionsAccessor = Context.RequestServices.GetRequiredService<IOptions<MvcOptions>>();
-            var opts = optionsAccessor.Options;
-            ConfigureOpts(opts);
-
-            base.OnActionExecuting(context);
+            MvcOptions = mvcOptions?.Options; // could - probably should -- reconfigure it here
         }
 
         #region re-configure options for requests to this controller
@@ -37,19 +31,31 @@ namespace UnicornStore.AspNet.Controllers
         // Here the most important thing we do is handle circular references.
         // Not doing this globally (in Startup.cs) because we can't be sure every controller
         // configures serialization the same way.
-        private void ConfigureOpts(MvcOptions options)
+        private void ConfigureMvcOptions()
         {
-            //if (options == null) { throw new NullReferenceException(nameof(MvcOptions)); }
+            //if (MvcOptions == null) { return; } // should only occur during testing
+
             //var jsonOutputFormatter = new JsonOutputFormatter();
             //jsonOutputFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             //jsonOutputFormatter.SerializerSettings.DefaultValueHandling = Newtonsoft.Json.DefaultValueHandling.Ignore;
             //jsonOutputFormatter.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.Objects;
             //jsonOutputFormatter.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore; // Employee.Manager
 
-            //options.OutputFormatters.RemoveTypesOf<JsonOutputFormatter>();
-            //options.OutputFormatters.Insert(0, jsonOutputFormatter);
+            //MvcOptions.OutputFormatters.RemoveTypesOf<JsonOutputFormatter>();
+            //MvcOptions.OutputFormatters.Insert(0, jsonOutputFormatter);
         }
         #endregion
+
+        #region A way to get MvcOptions (w/o injecting in ctor)
+        //public override void OnActionExecuting(ActionExecutingContext context)
+        //{
+        //    var optionsAccessor = Context.RequestServices.GetRequiredService<IOptions<MvcOptions>>();
+        //    MvcOptions = optionsAccessor.Options;
+        //    // could - probably should -- reconfigure it here
+        //    base.OnActionExecuting(context);
+        //}
+        #endregion
+
 
         //[HttpGet]
         [Route("")]
@@ -68,6 +74,7 @@ namespace UnicornStore.AspNet.Controllers
         [Route("ByCategory/{id}")]
         public IEnumerable<Product> ProductsByCategory(int id)
         {
+            ConfigureMvcOptions(); // because of circular references.
             return db.Products
                 .Where(p => p.CategoryId == id)
                 .Include(p => p.Category);
