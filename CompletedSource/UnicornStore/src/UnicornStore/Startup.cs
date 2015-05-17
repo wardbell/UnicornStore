@@ -152,7 +152,8 @@ namespace UnicornStore
             app.ProcessPreApprovedAdmin(Configuration.Get("secrets:preApprovedAdmin"));
 
             // place here to capture elapsed time of MVC pages/apis but not static files
-            app.UseMyMiddleware(); 
+            app.UseMyMiddleware();
+            //app.UseMiddleware<MyMiddlewareClass>(); // a different approach
 
             // Add MVC to the request pipeline.
             app.UseMvc(routes =>

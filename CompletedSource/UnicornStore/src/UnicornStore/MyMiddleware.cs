@@ -4,48 +4,75 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Http;
 
-/// <summary>
-/// Example middleware
-/// Add elapsed processing time to body (HTML only) and header
-/// </summary>
-public static class MyMiddleware {
-
-    public static IApplicationBuilder UseMyMiddleware(this IApplicationBuilder app)
+namespace UnicornStore
+{
+    /// <summary>
+    /// Example middleware
+    /// Add elapsed processing time to body (HTML only) and header
+    /// </summary>
+    public static class MyMiddleware
     {
-        return app.Use(next => context => TimeItAsync(context, next));
-    }
 
-    private static async Task TimeItAsync(HttpContext context, RequestDelegate next) { 
-        var body = context.Response.Body;
-        var buffer = new MemoryStream();
-        context.Response.Body = buffer;
-
-        var sw = new Stopwatch();
-        sw.Start();
-
-        try
+        public static IApplicationBuilder UseMyMiddleware(this IApplicationBuilder app)
         {
-            // await context.Response.WriteAsync("Before\r\n"); // can prepend text too
-            await next(context);
+            return app.Use(next => context => TimeItAsync(context, next));
+        }
 
-            sw.Stop();
-            var elapsed = sw.ElapsedMilliseconds;
+        internal static async Task TimeItAsync(HttpContext context, RequestDelegate next)
+        {
+            var body = context.Response.Body;
+            var buffer = new MemoryStream();
+            context.Response.Body = buffer;
 
-            context.Response.Headers.Add("X-ElapsedTime", new[] { elapsed.ToString() });
+            var sw = new Stopwatch();
+            sw.Start();
 
-            var isHtml = context.Response.ContentType?.ToLower().Contains("text/html");
-            if (context.Response.StatusCode == 200 && isHtml.GetValueOrDefault())
+            try
             {
-                var text = $"\r\n<p style=\"margin-left:1em\">Page processed in {elapsed:n0}ms.</p>\r\n";
-                // appended after </html> but most browsers will show it anyway
-                await context.Response.WriteAsync(text);
+                // await context.Response.WriteAsync("Before\r\n"); // can prepend text too
+                await next(context);
+
+                sw.Stop();
+                var elapsed = sw.ElapsedMilliseconds;
+
+                context.Response.Headers.Add("X-ElapsedTime", new[] { elapsed.ToString() });
+
+                var isHtml = context.Response.ContentType?.ToLower().Contains("text/html");
+                if (context.Response.StatusCode == 200 && isHtml.GetValueOrDefault())
+                {
+                    var text = $"\r\n<p style=\"margin-left:1em\">Page processed in {elapsed:n0}ms.</p>\r\n";
+                    // appended after </html> but most browsers will show it anyway
+                    await context.Response.WriteAsync(text);
+                }
+                buffer.Position = 0;
+                await buffer.CopyToAsync(body);
             }
-            buffer.Position = 0;
-            await buffer.CopyToAsync(body);
-        }
-        finally
-        {
-            context.Response.Body = body;
+            finally
+            {
+                context.Response.Body = body;
+            }
         }
     }
+
+
+
+    #region A less elegant, OO way to write middleware
+
+    // Add to pipeline like this:
+    //    app.UseMiddleware<MyMiddlewareClass>();
+    public class MyMiddlewareClass
+    {
+        RequestDelegate next;
+
+        public MyMiddlewareClass(RequestDelegate next)
+        {
+            this.next = next;
+        }
+
+        public async Task Invoke(HttpContext context)
+        {
+            await MyMiddleware.TimeItAsync(context, next);
+        }
+    }
+    #endregion
 }
