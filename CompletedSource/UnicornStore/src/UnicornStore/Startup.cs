@@ -77,20 +77,10 @@ namespace UnicornStore
             services.AddMvc();
 
             #region Global JSON Serialization Configuration
-            // Could configure JSON serialization for entire app
-            // Perhaps we can't be sure that all controllers want the same thing.
-            // See ProductsController for per-request configuration.
-            //services.Configure<MvcOptions>( options =>
-            //{
-            //    var jsonOutputFormatter = new JsonOutputFormatter();
-            //    jsonOutputFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-            //    jsonOutputFormatter.SerializerSettings.DefaultValueHandling = Newtonsoft.Json.DefaultValueHandling.Ignore;
-            //    jsonOutputFormatter.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.Objects;
-            //    jsonOutputFormatter.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore; // Employee.Manager
-
-            //    options.OutputFormatters.RemoveTypesOf<JsonOutputFormatter>();
-            //    options.OutputFormatters.Insert(0, jsonOutputFormatter);
-            //});
+            // Configure JSON serialization for entire app
+            // Assumes all api controller consumers want the same serialization
+            // Todo: figure out how to do per-request configuration.
+            services.ConfigureMvcOptions();
             #endregion
 
             // Uncomment the following line to add Web API services which makes it easier to port Web API 2 controllers.
