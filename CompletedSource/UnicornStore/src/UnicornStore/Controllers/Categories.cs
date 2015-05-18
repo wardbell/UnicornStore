@@ -5,6 +5,7 @@ using UnicornStore.AspNet.Models.UnicornStore;
 
 namespace UnicornStore.AspNet.Controllers
 {
+    //Todo: move all Entity Framework interaction to a repository/unit-of-work
 
     [Route("api/[controller]")]
     public class CategoriesController : Controller
@@ -16,14 +17,13 @@ namespace UnicornStore.AspNet.Controllers
             db = dbContext;
         }
 
-        //[HttpGet]
-        [Route("")]
-        public IEnumerable<Category> Category() 
+        [HttpGet]
+        public IEnumerable<Category> GetAllCategories() 
         {
             return db.Categories;
         }
 
-        [Route("{id}")]
+        [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
             var cat = db.Categories.FirstOrDefault(c => c.CategoryId == id);

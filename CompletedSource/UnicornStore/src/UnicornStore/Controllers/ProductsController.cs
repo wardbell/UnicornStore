@@ -20,8 +20,7 @@ namespace UnicornStore.AspNet.Controllers
             Foo = foo;
         }
 
-        //[HttpGet]
-        [Route("")]
+        [HttpGet]
         // IQueryable doesn't really work. 
         // This filters nothing: http://localhost:5000/api/products?$filter=ProductId%20eq%202
         public IQueryable<Product> Products() 
@@ -40,13 +39,13 @@ namespace UnicornStore.AspNet.Controllers
             return new ObjectResult(product);
         }
 
-        [Route("First3Products")]
+        [HttpGet("First3Products")]
         public IEnumerable<Product> First3Products()
         {
             return db.Products.Take(3);
         }
 
-        [Route("ByCategory/{id}")]
+        [HttpGet("ByCategory/{id}")]
         public IEnumerable<Product> ProductsByCategory(int id)
         {
             return db.Products
@@ -56,7 +55,6 @@ namespace UnicornStore.AspNet.Controllers
 
 
         [HttpPost]
-        [Route("")]
         //[Authorize] // A MUST ... but leaving out for demo purposes
         //[ValidateAntiForgeryToken] // Todo: support these tokens to prevent XSRF
         public IActionResult CreateProduct([FromBody] Product product)
@@ -80,7 +78,6 @@ namespace UnicornStore.AspNet.Controllers
         }
 
         [HttpPut]
-        [Route("")]
         //[Authorize] // A MUST ... but leaving out for demo purposes
         //[ValidateAntiForgeryToken]
         public IActionResult UpdateProduct([FromBody] Product product)
@@ -105,7 +102,6 @@ namespace UnicornStore.AspNet.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Route("{id}")]
         //[Authorize] // A MUST ... but leaving out for demo purposes
         //[ValidateAntiForgeryToken]
         public IActionResult DeleteProduct(int id)
