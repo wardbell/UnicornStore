@@ -45,7 +45,7 @@ namespace UnicornStore.AspNet.Controllers
             return db.Products.Take(3);
         }
 
-        [HttpGet("ByCategory/{id}")]
+        [HttpGet("ByCategory/{id:int}")]
         public IEnumerable<Product> ProductsByCategory(int id)
         {
             return db.Products
@@ -101,7 +101,7 @@ namespace UnicornStore.AspNet.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         //[Authorize] // A MUST ... but leaving out for demo purposes
         //[ValidateAntiForgeryToken]
         public IActionResult DeleteProduct(int id)

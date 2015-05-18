@@ -23,7 +23,7 @@ namespace UnicornStore.AspNet.Controllers
             return db.Categories;
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public IActionResult GetById(int id)
         {
             var cat = db.Categories.FirstOrDefault(c => c.CategoryId == id);
