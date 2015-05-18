@@ -1,9 +1,10 @@
 ﻿{
-  "webroot": "wwwroot",
+  "webroot": "wwwroot",  // public static assets
   "userSecretsId": "aspnet5-UnicornStore-5080b395-8181-44af-8103-7bd5340e6f8d",
   "version": "1.0.0-*",
 
-  "dependencies": {
+  /* mostly nuget packages */
+  "dependencies": {  
     "EntityFramework.SqlServer": "7.0.0-beta4",
     "EntityFramework.Commands": "7.0.0-beta4",
     "Kestrel": "1.0.0-beta4",
@@ -29,11 +30,13 @@
     "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0-beta4"
   },
 
-    "frameworks": {
-        "dnx451": { },
-        "dnxcore50": { }
-    },
+  /* runtime-specific dependencies */
+  "frameworks": {
+      "dnx451": { },
+      "dnxcore50": { }
+  },
 
+  /* dnx commands */
   "commands": {
     "web": "Microsoft.AspNet.Hosting --server Microsoft.AspNet.Server.WebListener --server.urls http://localhost:5001",
     "kestrel": "Microsoft.AspNet.Hosting --server Kestrel --server.urls http://localhost:5002",
@@ -41,21 +44,24 @@
     "ef":  "EntityFramework.Commands"
   },
 
-
-  "exclude": [
-    "wwwroot",
-    "node_modules",
-    "bower_components"
-  ],
-  "publishExclude": [
-    "node_modules",
-    "bower_components",
-    "**.xproj",
-    "**.user",
-    "**.vspscc"
-  ],
+   /* build tasks */
   "scripts": {
     "postrestore": [ "npm install", "bower install" ],
     "prepare": [ "gulp copy" ]
-  }
+  },
+
+  "exclude": [
+      "wwwroot",
+      "node_modules",
+      "bower_components"
+  ],
+
+  "publishExclude": [
+      "node_modules",
+      "bower_components",
+      "**.xproj",
+      "**.user",
+      "**.vspscc"
+   ]
+
 }
