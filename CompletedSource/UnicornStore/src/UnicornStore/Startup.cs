@@ -98,7 +98,7 @@ namespace UnicornStore
             //services.AddScoped<IFoo>(Foo.FooFactory);    // Scoped (per request) w/ factory
 
             // DI creates UnicornStoreContext with its injecteds
-            services.AddScoped<IUnicornStoreContext>(_ => _.GetService<UnicornStoreContext>());
+            services.AddScoped<IUnicornStoreContext, UnicornStoreContext>();
 
             #endregion  
         }
