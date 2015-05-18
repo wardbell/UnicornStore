@@ -3,12 +3,10 @@ using Microsoft.AspNet.Diagnostics;
 using Microsoft.AspNet.Diagnostics.Entity;
 using Microsoft.AspNet.Hosting;
 using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.AspNet.Mvc;
 using Microsoft.Data.Entity;
 using Microsoft.Framework.ConfigurationModel;
 using Microsoft.Framework.DependencyInjection;
 using Microsoft.Framework.Logging;
-using Newtonsoft.Json.Serialization;
 using UnicornStore.AspNet.Models.Identity;
 using UnicornStore.AspNet.Models.UnicornStore;
 using UnicornStore.Logging;
@@ -36,10 +34,6 @@ namespace UnicornStore
             configuration.AddEnvironmentVariables();
             Configuration = configuration;
         }
-
-        private IConfiguration Configuration { get; set; }
-
-
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -76,12 +70,10 @@ namespace UnicornStore
             // Add and configure MVC services to the services container.
             services.AddMvc();
 
-            #region Global JSON Serialization Configuration
             // Configure JSON serialization for entire app
             // Assumes all api controller consumers want the same serialization
             // Todo: figure out how to do per-request configuration.
             services.ConfigureMvcOptions();
-            #endregion
 
             // Uncomment the following line to add Web API services which makes it easier to port Web API 2 controllers.
             // You will also need to add the Microsoft.AspNet.Mvc.WebApiCompatShim package to the 'dependencies' section of project.json.
@@ -102,8 +94,6 @@ namespace UnicornStore
 
             #endregion  
         }
-
-
 
         // Configure is called after ConfigureServices is called.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerfactory, IFoo foo)
@@ -160,6 +150,7 @@ namespace UnicornStore
 
         }
 
+        private IConfiguration Configuration { get; }
     }
 
 }
