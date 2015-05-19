@@ -26,3 +26,5 @@
 /// <reference path="app/wip-service.js" />
 /// <reference path="app/manageproductscontroller.js" />
 /// <reference path="app/datacontext.js" />
+/// <reference path="lib/toastr/toastr.js" />
+/// <reference path="app/logger.js" />

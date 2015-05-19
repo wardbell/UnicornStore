@@ -1,6 +1,7 @@
 (function() {
     'use strict';
-    angular.module('app').controller('manageProductsController', manageProductsController);
+    angular.module('app')
+        .controller('manageProductsController', manageProductsController);
 
     manageProductsController.$inject = ['$scope', '$timeout', 'dataservice', 'wip-service'];
     function manageProductsController($scope, $timeout, dataservice, wip) {

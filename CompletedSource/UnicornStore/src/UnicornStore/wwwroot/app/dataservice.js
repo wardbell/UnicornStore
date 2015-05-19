@@ -5,8 +5,8 @@
     'use strict';
     angular.module('app').factory('dataservice', dataservice);
 
-    dataservice.$inject = ['$log', '$q', 'breeze', 'entityManagerFactory', 'wip-service'];
-    function dataservice($log, $q, breeze, entityManagerFactory, wip) {
+    dataservice.$inject = ['$q', 'breeze', 'entityManagerFactory', 'logger', 'wip-service'];
+    function dataservice($q, breeze, entityManagerFactory, logger, wip) {
 
         var addedState = breeze.EntityState.Added;
         var deletedState = breeze.EntityState.Deleted;
@@ -83,7 +83,7 @@
             function success(data){
                 // Interested in what server has then we are done.
                 var fetched = data.results;
-                $log.log('breeze query succeeded. fetched: '+ fetched.length);
+                logger.info('breeze query succeeded. fetched: '+ fetched.length);
 
                 // Blended results.
                 // All local changes plus what the server query returned.
@@ -101,7 +101,7 @@
                 // Check cache first (synchronous)
                 var entity = manager.getEntityByKey(entityName, id);
                 if (entity && !entity.isPartial) {
-                    //self.log('Retrieved [' + entityName + '] id:' + entity.id + ' from cache.', entity);
+                    logger.info('Retrieved [' + entityName + '] id:' + entity.id + ' from cache.', entity);
                     if (entity.entityAspect.entityState.isDeleted()) {
                         entity = null; // hide session marked-for-delete
                     }
@@ -119,11 +119,11 @@
             function querySucceeded(data) {
                 entity = data.entity;
                 if (!entity) {
-                    //self.log('Could not find [' + entityName + '] id:' + id, null);
+                    logger.warning('Could not find [' + entityName + '] id:' + id, null);
                     return null;
                 }
                 setIsPartial(entity, false);
-                //self.log('Retrieved [' + entityName + '] id ' + entity.id + ' from remote data source', entity);
+                logger.info('Retrieved [' + entityName + '] id ' + entity.id + ' from remote data source', entity);
                 //zStorage.save();
                 return entity;
             }
@@ -154,6 +154,7 @@
             var status = error.status ? error.status + ' - ' : '';
             var err = status + (error.message ? error.message : 'Unknown error; check console.log.');
             err += '\nIs the server running?';
+            logger.error(err)
             return $q.reject(err); // so downstream listener gets it.
         }
 
@@ -169,7 +170,7 @@
         function sync() {
             return manager.saveChanges()
                 .then(function (){
-                    $log.log('breeze save succeeded');
+                    logger.info('breeze save succeeded');
                     wip.clear();
                     return getAllProducts();
                 })

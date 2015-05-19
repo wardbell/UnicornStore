@@ -1,72 +1,11 @@
 ﻿{
-  "id": "c5aa9947-7ce3-e5b5-5421-6b607a6552f0",
+  "id": "0a1c416d-ed9e-5fe3-86e9-c87f05af825b",
   "name": "UnicornStore",
   "timestamp": 1431881679005,
   "requests": [
     {
-      "collectionId": "c5aa9947-7ce3-e5b5-5421-6b607a6552f0",
-      "id": "0ea429a6-4d5b-2a8f-78ba-c7a1ee64fde3",
-      "name": "Update product",
-      "description": "",
-      "url": "http:\/\/localhost:5000\/api\/products",
-      "method": "PUT",
-      "headers": "Accept-Encoding: gzip,deflate,sdch\nAccept: application\/json;\nContent-Type: application\/json; charset=utf-8\n",
-      "data": "{\n  productId: 8,\n  displayName: \"Unicorn Coffee Mug (UPDATED)\",\n  description: \"A nifty new Unicorn mug for that piping hot beverage\",\n  msrp: 42.00,\n  currentPrice: 20.00,\n  imageUrl: \"\/images\/products\/CoffeeMug_Pink.png\",\n  categoryId: 4\n}",
-      "dataMode": "raw",
-      "timestamp": 0,
-      "responses": [
-        
-      ],
-      "version": 2
-    },
-    {
-      "collectionId": "c5aa9947-7ce3-e5b5-5421-6b607a6552f0",
-      "id": "296992bc-802c-4346-2f57-33e4b0fe8f6a",
-      "name": "Get all categories",
-      "description": "",
-      "url": "http:\/\/localhost:5000\/api\/categories",
-      "method": "GET",
-      "headers": "Accept: application\/json\nAccept-Encoding: gzip,deflate,sdch\nContent-Type: application\/json\n",
-      "data": "{\n  displayName: \"Unicorn Coffee Mug (???)\",\n  description: \"A nifty new Unicorn mug for that piping hot beverage\",\n  msrp: 20.01,\n  currentPrice: 20.01,\n  imageUrl: \"\/images\/products\/CoffeeMug_Blue.png\",\n  categoryId: 4\n}",
-      "dataMode": "raw",
-      "timestamp": 0,
-      "responses": [
-        
-      ],
-      "version": 2
-    },
-    {
-      "collectionId": "c5aa9947-7ce3-e5b5-5421-6b607a6552f0",
-      "id": "59c468d4-1bca-49a3-3daf-6f74acd04009",
-      "name": "Delete product",
-      "description": "",
-      "url": "http:\/\/localhost:5000\/api\/products\/8",
-      "method": "DELETE",
-      "headers": "Accept-Encoding: gzip,deflate,sdch\nAccept: application\/json;\nContent-Type: application\/json; charset=utf-8\n",
-      "data": "",
-      "dataMode": "raw",
-      "timestamp": 0,
-      "version": 2
-    },
-    {
-      "collectionId": "c5aa9947-7ce3-e5b5-5421-6b607a6552f0",
-      "id": "64cc2e79-29b9-9047-73fc-e5f906e61a19",
-      "name": "Get product by ProductId",
-      "description": "",
-      "url": "http:\/\/localhost:5000\/api\/products\/1",
-      "method": "GET",
-      "headers": "Accept: application\/json\nAccept-Encoding: gzip,deflate,sdch\nContent-Type: application\/json\n",
-      "data": "{\n  displayName: \"Unicorn Coffee Mug (???)\",\n  description: \"A nifty new Unicorn mug for that piping hot beverage\",\n  msrp: 20.01,\n  currentPrice: 20.01,\n  imageUrl: \"\/images\/products\/CoffeeMug_Blue.png\",\n  categoryId: 4\n}",
-      "dataMode": "raw",
-      "timestamp": 0,
-      "responses": [
-        
-      ],
-      "version": 2
-    },
-    {
-      "collectionId": "c5aa9947-7ce3-e5b5-5421-6b607a6552f0",
-      "id": "6b1fc72b-73f2-34c7-3768-4d35ba041af5",
+      "collectionId": "0a1c416d-ed9e-5fe3-86e9-c87f05af825b",
+      "id": "087044e9-5470-fb15-b840-f093c3da05db",
       "name": "Get all products",
       "description": "",
       "url": "http:\/\/localhost:5000\/api\/products",
@@ -81,8 +20,99 @@
       "version": 2
     },
     {
-      "collectionId": "c5aa9947-7ce3-e5b5-5421-6b607a6552f0",
-      "id": "a1e3d127-b54b-a1c4-4c18-6ed1d8bdedb2",
+      "collectionId": "0a1c416d-ed9e-5fe3-86e9-c87f05af825b",
+      "id": "20fc3581-4c81-3426-e160-2598f5519925",
+      "name": "Delete product",
+      "description": "",
+      "url": "http:\/\/localhost:5000\/api\/products\/8",
+      "method": "DELETE",
+      "headers": "Accept-Encoding: gzip,deflate,sdch\nAccept: application\/json;\nContent-Type: application\/json; charset=utf-8\n",
+      "data": "",
+      "dataMode": "raw",
+      "timestamp": 0,
+      "version": 2,
+      "time": 1431885968273
+    },
+    {
+      "collectionId": "0a1c416d-ed9e-5fe3-86e9-c87f05af825b",
+      "id": "2f6398ac-aef1-3b8e-9b25-d848c99e1164",
+      "name": "Get product by ProductId",
+      "description": "",
+      "url": "http:\/\/localhost:5000\/api\/products\/1",
+      "method": "GET",
+      "headers": "Accept: application\/json\nAccept-Encoding: gzip,deflate,sdch\nContent-Type: application\/json\n",
+      "data": "{\n  displayName: \"Unicorn Coffee Mug (???)\",\n  description: \"A nifty new Unicorn mug for that piping hot beverage\",\n  msrp: 20.01,\n  currentPrice: 20.01,\n  imageUrl: \"\/images\/products\/CoffeeMug_Blue.png\",\n  categoryId: 4\n}",
+      "dataMode": "raw",
+      "timestamp": 0,
+      "responses": [
+        
+      ],
+      "version": 2
+    },
+    {
+      "collectionId": "0a1c416d-ed9e-5fe3-86e9-c87f05af825b",
+      "id": "361266fd-7d96-16c9-e2eb-c93eab115eab",
+      "name": "Get products by CategoryId",
+      "description": "",
+      "url": "http:\/\/localhost:5000\/api\/products\/byCategory\/4",
+      "method": "GET",
+      "headers": "Accept: application\/json\nAccept-Encoding: gzip,deflate,sdch\nContent-Type: application\/json\n",
+      "data": "{\n  displayName: \"Unicorn Coffee Mug (???)\",\n  description: \"A nifty new Unicorn mug for that piping hot beverage\",\n  msrp: 20.01,\n  currentPrice: 20.01,\n  imageUrl: \"\/images\/products\/CoffeeMug_Blue.png\",\n  categoryId: 4\n}",
+      "dataMode": "raw",
+      "timestamp": 0,
+      "responses": [
+        
+      ],
+      "version": 2
+    },
+    {
+      "collectionId": "0a1c416d-ed9e-5fe3-86e9-c87f05af825b",
+      "id": "6ae610f4-1e41-ca98-a5a2-af589561e5eb",
+      "name": "Add new mug to Products",
+      "description": "",
+      "url": "http:\/\/localhost:5000\/api\/products",
+      "method": "POST",
+      "headers": "Accept-Encoding: gzip,deflate,sdch\nAccept: application\/json;\nContent-Type: application\/json; charset=utf-8\n",
+      "data": "{\n  displayName: \"Unicorn Coffee Mug (NEW)\",\n  description: \"A nifty new Unicorn mug for that piping hot beverage\",\n  msrp: 20.01,\n  currentPrice: 20.01,\n  imageUrl: \"\/images\/products\/CoffeeMug_Blue.png\",\n  categoryId: 4\n}",
+      "dataMode": "raw",
+      "timestamp": 0,
+      "version": 2
+    },
+    {
+      "collectionId": "0a1c416d-ed9e-5fe3-86e9-c87f05af825b",
+      "id": "7294bf11-ded3-a53a-1839-2bf35b14a6af",
+      "name": "Get product summaries",
+      "description": "A projection over all products",
+      "url": "http:\/\/localhost:5000\/api\/products\/summaries",
+      "method": "GET",
+      "headers": "Accept: application\/json\nAccept-Encoding: gzip,deflate,sdch\nContent-Type: application\/json\n",
+      "data": "",
+      "dataMode": "raw",
+      "timestamp": 0,
+      "responses": [
+        
+      ],
+      "version": 2
+    },
+    {
+      "collectionId": "0a1c416d-ed9e-5fe3-86e9-c87f05af825b",
+      "id": "76290c2e-f046-656d-a4f0-9b07b46278c2",
+      "name": "Get all categories",
+      "description": "",
+      "url": "http:\/\/localhost:5000\/api\/categories",
+      "method": "GET",
+      "headers": "Accept: application\/json\nAccept-Encoding: gzip,deflate,sdch\nContent-Type: application\/json\n",
+      "data": "{\n  displayName: \"Unicorn Coffee Mug (???)\",\n  description: \"A nifty new Unicorn mug for that piping hot beverage\",\n  msrp: 20.01,\n  currentPrice: 20.01,\n  imageUrl: \"\/images\/products\/CoffeeMug_Blue.png\",\n  categoryId: 4\n}",
+      "dataMode": "raw",
+      "timestamp": 0,
+      "responses": [
+        
+      ],
+      "version": 2
+    },
+    {
+      "collectionId": "0a1c416d-ed9e-5fe3-86e9-c87f05af825b",
+      "id": "9bfcefe4-96e1-9cad-c9d8-f5eade13e1d1",
       "name": "Get first 3 products found",
       "description": "",
       "url": "http:\/\/localhost:5000\/api\/products\/first3products",
@@ -97,27 +127,14 @@
       "version": 2
     },
     {
-      "collectionId": "c5aa9947-7ce3-e5b5-5421-6b607a6552f0",
-      "id": "c673bed4-2db0-f620-8e51-908457dfe394",
-      "name": "Add new mug to Products",
+      "collectionId": "0a1c416d-ed9e-5fe3-86e9-c87f05af825b",
+      "id": "e6aabce8-db25-7bde-29ae-9ed85c473c35",
+      "name": "Update product",
       "description": "",
       "url": "http:\/\/localhost:5000\/api\/products",
-      "method": "POST",
+      "method": "PUT",
       "headers": "Accept-Encoding: gzip,deflate,sdch\nAccept: application\/json;\nContent-Type: application\/json; charset=utf-8\n",
-      "data": "{\n  displayName: \"Unicorn Coffee Mug (NEW)\",\n  description: \"A nifty new Unicorn mug for that piping hot beverage\",\n  msrp: 20.01,\n  currentPrice: 20.01,\n  imageUrl: \"\/images\/products\/CoffeeMug_Blue.png\",\n  categoryId: 4\n}",
-      "dataMode": "raw",
-      "timestamp": 0,
-      "version": 2
-    },
-    {
-      "collectionId": "c5aa9947-7ce3-e5b5-5421-6b607a6552f0",
-      "id": "cc3d97aa-df3c-7d81-70d8-af57406dad13",
-      "name": "Get products by CategoryId",
-      "description": "",
-      "url": "http:\/\/localhost:5000\/api\/products\/byCategory\/4",
-      "method": "GET",
-      "headers": "Accept: application\/json\nAccept-Encoding: gzip,deflate,sdch\nContent-Type: application\/json\n",
-      "data": "{\n  displayName: \"Unicorn Coffee Mug (???)\",\n  description: \"A nifty new Unicorn mug for that piping hot beverage\",\n  msrp: 20.01,\n  currentPrice: 20.01,\n  imageUrl: \"\/images\/products\/CoffeeMug_Blue.png\",\n  categoryId: 4\n}",
+      "data": "{\n  productId: 8,\n  displayName: \"Unicorn Coffee Mug (UPDATED)\",\n  description: \"A nifty new Unicorn mug for that piping hot beverage\",\n  msrp: 42.00,\n  currentPrice: 20.00,\n  imageUrl: \"\/images\/products\/CoffeeMug_Pink.png\",\n  categoryId: 4\n}",
       "dataMode": "raw",
       "timestamp": 0,
       "responses": [
@@ -127,13 +144,14 @@
     }
   ],
   "order": [
-    "296992bc-802c-4346-2f57-33e4b0fe8f6a",
-    "6b1fc72b-73f2-34c7-3768-4d35ba041af5",
-    "64cc2e79-29b9-9047-73fc-e5f906e61a19",
-    "cc3d97aa-df3c-7d81-70d8-af57406dad13",
-    "a1e3d127-b54b-a1c4-4c18-6ed1d8bdedb2",
-    "c673bed4-2db0-f620-8e51-908457dfe394",
-    "0ea429a6-4d5b-2a8f-78ba-c7a1ee64fde3",
-    "59c468d4-1bca-49a3-3daf-6f74acd04009"
+    "76290c2e-f046-656d-a4f0-9b07b46278c2",
+    "087044e9-5470-fb15-b840-f093c3da05db",
+    "2f6398ac-aef1-3b8e-9b25-d848c99e1164",
+    "361266fd-7d96-16c9-e2eb-c93eab115eab",
+    "9bfcefe4-96e1-9cad-c9d8-f5eade13e1d1",
+    "7294bf11-ded3-a53a-1839-2bf35b14a6af",
+    "6ae610f4-1e41-ca98-a5a2-af589561e5eb",
+    "e6aabce8-db25-7bde-29ae-9ed85c473c35",
+    "20fc3581-4c81-3426-e160-2598f5519925"
   ]
 }

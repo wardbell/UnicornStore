@@ -6,8 +6,8 @@
     'use strict';
     angular.module('app').factory('model', service);
 
-    service.$inject = ['$log', '$q', 'breeze'];
-    function service($log, $q, breeze){
+    service.$inject = ['breeze'];
+    function service(breeze){
         var model =  {
             setModel: setModel
         };
