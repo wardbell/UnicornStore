@@ -27,7 +27,9 @@
     "Microsoft.Framework.CodeGenerators.Mvc": "1.0.0-beta4",
     "Microsoft.Framework.Logging": "1.0.0-beta4",
     "Microsoft.Framework.Logging.Console": "1.0.0-beta4",
-    "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0-beta4"
+    "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0-beta4",
+    "kmon": "0.4.0"
+
   },
 
   /* runtime-specific dependencies */
@@ -41,7 +43,8 @@
     "web": "Microsoft.AspNet.Hosting --server Microsoft.AspNet.Server.WebListener --server.urls http://localhost:5001",
     "kestrel": "Microsoft.AspNet.Hosting --server Kestrel --server.urls http://localhost:5002",
     "gen": "Microsoft.Framework.CodeGeneration",
-    "ef":  "EntityFramework.Commands"
+    "ef": "EntityFramework.Commands",
+    "kmon": "kmon"
   },
 
    /* build tasks */

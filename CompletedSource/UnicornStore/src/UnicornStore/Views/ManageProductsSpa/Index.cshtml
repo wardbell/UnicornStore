@@ -1,0 +1,32 @@
+﻿    @{
+    ViewBag.Title = "Manage Products";
+    }
+    @Html.AntiForgeryToken()
+
+	<div ng-app="app">
+		<h2>Manage Products</h2>
+		<div ng-include="'app/manageProducts.html'"></div>
+	</div>
+
+    @section Css {
+	<link rel="stylesheet" href="~/lib/breeze-client-labs/breeze.directives.css" />
+    }
+    @section Scripts {
+    <!-- libs -->
+    <script src="~/lib/angular/angular.js"></script>
+	<script src="~/lib/breeze-client/breeze.debug.js"></script>
+	<script src="~/lib/breeze-angular/breeze.bridge.angular.js"></script>
+    <script src="~/lib/breeze-client-labs/breeze.directives.js"></script>
+	<script src="~/lib/breeze-client-labs/breeze.labs.dataservice.abstractrest.js"></script>
+	<script src="~/lib/breeze-client-labs/breeze.labs.dataservice.azuremobileservices.js"></script>
+	<script src="~/lib/breeze-client-labs/breeze.metadata-helper.js"></script>
+	<script src="~/lib/breeze-client-labs/breeze.saveErrorExtensions.js"></script>
+    <!-- app scripts -->
+	<script src="~/app/app.js"></script>
+	<script src="~/app/dataservice.js"></script>
+	<script src="~/app/entityManagerFactory.js"></script>
+	<script src="~/app/manageProductsController.js"></script>
+	<script src="~/app/model.js"></script>
+	<script src="~/app/wip-service.js"></script>
+    }
+

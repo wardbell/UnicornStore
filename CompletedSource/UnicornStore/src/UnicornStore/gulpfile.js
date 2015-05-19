@@ -16,9 +16,13 @@ gulp.task("clean", function (cb) {
 });
 
 gulp.task("copy", ["clean"], function () {
-  var bower = {
+    var bower = {
+    "angular": "angular/angular.{js,min.js}",
     "bootstrap": "bootstrap/dist/**/*.{js,map,css,ttf,svg,woff,eot}",
     "bootstrap-touch-carousel": "bootstrap-touch-carousel/dist/**/*.{js,css}",
+    "breeze-client": "breeze-client/build/breeze.{debug.js,min.js}", 
+    "breeze-angular": "breeze-client/build/adapters/breeze.bridge.angular.js",
+    "breeze-client-labs":"breeze-client-labs/*.{js,css}",
     "hammer.js": "hammer.js/hammer*.{js,map}",
     "jquery": "jquery/jquery*.{js,map}",
     "jquery-validation": "jquery-validation/jquery.validate.js",

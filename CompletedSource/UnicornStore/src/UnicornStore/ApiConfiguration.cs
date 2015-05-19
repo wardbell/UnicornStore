@@ -21,7 +21,7 @@ namespace UnicornStore
             var jsonOutputFormatter = new JsonOutputFormatter();
 
             // Pro: nice default for many SPA clients. Con: Don't do this to Breeze client which has its process (NamingConvention)
-            jsonOutputFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            //jsonOutputFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
 
             // Pro: removes most null properties reducing payload. Con: prevents update of cached entity property to a null value
             //jsonOutputFormatter.SerializerSettings.DefaultValueHandling = Newtonsoft.Json.DefaultValueHandling.Ignore; 

@@ -1,0 +1,14 @@
+﻿<div>
+    <table class="table">
+        <tr>
+            <th>DisplayName</th>
+            <th>CurrentPrice</th>
+            <th>MSRP</th>
+        </tr>
+        <tr ng-repeat="product in vm.products"> <!-- | filter:vm.productsFilter"> -->
+            <td>{{product.displayName}}</td>
+            <td>{{product.currentPrice}}</td>
+            <td>{{product.msrp}}</td>
+        </tr>
+    </table>
+</div>

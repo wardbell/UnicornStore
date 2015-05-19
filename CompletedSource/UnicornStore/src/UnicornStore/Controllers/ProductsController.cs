@@ -45,6 +45,12 @@ namespace UnicornStore.AspNet.Controllers
             return db.Products.Take(3);
         }
 
+        [HttpGet("Summaries")]
+        public IEnumerable<object> Summaries()
+        {
+            return db.Products.Select(p => new { p.ProductId, p.DisplayName, p.CurrentPrice });
+        }
+
         [HttpGet("ByCategory/{id:int}")]
         public IEnumerable<Product> ProductsByCategory(int id)
         {
