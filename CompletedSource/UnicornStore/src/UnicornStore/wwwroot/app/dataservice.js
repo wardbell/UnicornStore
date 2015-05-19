@@ -49,7 +49,9 @@
             }
         }
 
-        function addProduct(initialValues){
+        function addProduct(initialValues) {
+            initialValues = initialValues || {};
+            initialValues.isPartial = false;
             return manager.createEntity(productType, initialValues);
         }
 
@@ -74,9 +76,9 @@
         // Get Products from the server (just summaries) and cache combined
         function getProducts() {
 
-            EntityQuery.from('Products/Summaries').toType(productType)
-            .using(manager).execute()
-            .then(success).catch(queryFailed);
+            return EntityQuery.from('Products/Summaries').toType(productType)
+                .using(manager).execute()
+                .then(success).catch(queryFailed);
 
             function success(data){
                 // Interested in what server has then we are done.
@@ -89,6 +91,47 @@
 
                 // Warning: the cache will accumulate entities that
                 // have been deleted by other users until it is entirely rebuilt via 'refresh'
+            }
+        }
+
+        function getProductById(id, forceRemote) {
+            var self = this;
+            var entityName = self.entityName;
+            if (!forceRemote) {
+                // Check cache first (synchronous)
+                var entity = manager.getEntityByKey(entityName, id);
+                if (entity && !entity.isPartial) {
+                    //self.log('Retrieved [' + entityName + '] id:' + entity.id + ' from cache.', entity);
+                    if (entity.entityAspect.entityState.isDeleted()) {
+                        entity = null; // hide session marked-for-delete
+                    }
+                    // Should not need to call $apply because it is synchronous
+                    return $q.when(entity);
+                }
+            }
+
+            // It was not found in cache, so let's query for it.
+            // fetchEntityByKey will go remote because
+            // 3rd parm is false/undefined.
+            return manager.fetchEntityByKey(entityName, id)
+                .then(querySucceeded).catch(self.queryFailed);
+
+            function querySucceeded(data) {
+                entity = data.entity;
+                if (!entity) {
+                    //self.log('Could not find [' + entityName + '] id:' + id, null);
+                    return null;
+                }
+                setIsPartial(entity, false);
+                //self.log('Retrieved [' + entityName + '] id ' + entity.id + ' from remote data source', entity);
+                //zStorage.save();
+                return entity;
+            }
+
+            function setIsPartial(entity, value) {
+                entity.isPartial = false;
+                // not a revertable property so remove from orginalValues
+                delete entity.entityAspect.originalValues['isPartial']; 
             }
         }
 

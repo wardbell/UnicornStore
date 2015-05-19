@@ -1,4 +1,4 @@
-﻿<div>
+﻿<div ng-controller="manageProductsController as vm">
     <table class="table">
         <tr>
             <th>DisplayName</th>
@@ -7,8 +7,8 @@
         </tr>
         <tr ng-repeat="product in vm.products"> <!-- | filter:vm.productsFilter"> -->
             <td>{{product.displayName}}</td>
-            <td>{{product.currentPrice}}</td>
-            <td>{{product.msrp}}</td>
+            <td>{{product.currentPrice | currency}}</td>
+            <td>{{product.msrp  | currency}}</td>
         </tr>
     </table>
 </div>

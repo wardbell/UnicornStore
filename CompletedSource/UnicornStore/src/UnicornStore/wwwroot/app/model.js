@@ -37,9 +37,9 @@
                     name: "Category",
                     defaultResourceName: "Categories",
                     dataProperties: {
-                        categoryId:  { type: DT.Int32, key: true },
+                        categoryId:  { type: DT.Int32 },
                         displayName: { max: 50, required: true },
-                        parentCategoryId: { type: DT.Int32 }
+                        parentCategoryId: { type: DT.Int32, required: false }
                     },
                     navigationProperties: {
                         parentCategory: {
@@ -70,7 +70,7 @@
                     name: "Product",
                     defaultResourceName: "Products",
                     dataProperties: {
-                        productId:    { type: DT.Int32, key: true },
+                        productId:    { type: DT.Int32 },
                         displayName:  { max: 50, required: true },
                         description:  { max: 300, required: true },
                         msrp:         { type: DT.Decimal, required: true},
@@ -82,17 +82,21 @@
                         category: {
                             entityTypeName: "Category",
                             associationName: "Product_Category",
-                            foreignKeyNames: ["categoryID"]
+                            foreignKeyNames: ["categoryId"]
                         }
                     }
                 };
 
                 helper.addTypeToStore(store, entityType);
 
-                function Product() { }
+                function Product() {
+                    this.isPartial = true; // presume partial until informed otherwise
+                }
+
                 Object.defineProperty(Product.prototype, 'Savings', {
                     get: function () { return this.msrp - this.currentPrice; }
                 });
+
                 store.registerEntityTypeCtor('Product', Product);
 
                 return entityType;

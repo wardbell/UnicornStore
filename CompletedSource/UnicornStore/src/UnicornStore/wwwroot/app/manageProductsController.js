@@ -5,16 +5,10 @@
     manageProductsController.$inject = ['$scope', '$timeout', 'dataservice', 'wip-service'];
     function manageProductsController($scope, $timeout, dataservice, wip) {
         var vm = this;
-        vm.appTitle = config.appTitle;
-        vm.clearErrorLog = clearErrorLog;
-        vm.errorLog = [];
-        vm.isBusy = true;
-        vm.newProductText = '';
-        vm.syncDisabled = syncDisabled;
-        vm.showCompleted = false;
-        vm.showDeleted = false;
-        vm.products = [];
         vm.categories = [];
+        vm.currentProduct;
+        vm.isBusy = true;
+        vm.products = [];
         vm.wipMessages = [];
 
         var wipMsgCount = 0;
@@ -26,7 +20,6 @@
             vm.addProduct = addProduct;
             vm.counts = dataservice.counts;
             vm.deleteProduct = deleteProduct;
-            vm.productsFilter = productsFilter;
             vm.refresh = refresh;
             vm.reset = reset;
             vm.sync = sync;
@@ -36,6 +29,7 @@
 
         ////////////////////////////
         function addProduct() {
+            //TBD
             if (vm.newProductText !== '') {
                 var newProduct = dataservice.addProduct({ text: vm.newProductText});
                 vm.products.unshift(newProduct);
@@ -43,9 +37,8 @@
             }
         }
 
-        function clearErrorLog() { vm.errorLog = [];}
-
-        function deleteProduct(product){
+        function deleteProduct(product) {
+            //TBD
             dataservice.deleteProduct(product);
             if (product.entityAspect.entityState.isDetached()){
                 // remove from the list if became detached
@@ -53,10 +46,6 @@
                 if (ix > -1) { vm.products.splice(ix,1); }
             }
         }
-
-
-
-
 
         function getProducts() {
             vm.isBusy = true;
@@ -66,21 +55,11 @@
                 .then(querySuccess, handleError);
         }
 
-
-
         function handleError(error) {
             vm.isBusy = false;  
             var err = typeof error === 'string'? error : error.message;
             vm.errorLog.push((vm.errorLog.length+1) + ': ' + 
                 (err || 'unknown error'));
-        }
-
-        function productsFilter(product) {
-            // Beware: this is called a lot!
-            var state = product.entityAspect.entityState;
-            return !state.isDetached() &&
-                (!state.isDeleted() || vm.showDeleted)  &&
-                (!product.complete || vm.showCompleted);
         }
 
         function loadProducts(){
@@ -108,7 +87,6 @@
 
         function reset(){
             vm.isBusy = true;
-            vm.newProductText='';
             return dataservice.reset().then(querySuccess, handleError);
         }
 
@@ -118,8 +96,5 @@
             return dataservice.sync().then(querySuccess, handleError);
         }
 
-        function syncDisabled(){
-            return vm.isBusy;
-        }
     }
 })();

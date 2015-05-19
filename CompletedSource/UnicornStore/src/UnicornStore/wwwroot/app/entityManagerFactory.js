@@ -45,7 +45,7 @@
                     return serverPropertyName.substr(0, 1).toLowerCase() + serverPropertyName.substr(1);
                 },
                 clientPropertyNameToServer: function (clientPropertyName) {
-                    if (serverPropertyName === 'msrp') { return 'MSRP'; }
+                    if (clientPropertyName === 'msrp') { return 'MSRP'; }
                     return clientPropertyName.substr(0, 1).toUpperCase() + clientPropertyName.substr(1);
                 }
             });
