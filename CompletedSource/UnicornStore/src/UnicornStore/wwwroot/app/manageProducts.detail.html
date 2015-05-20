@@ -1,0 +1,47 @@
+﻿<div >
+    <h3>{{vm.product.productId}} - {{vm.product.displayName}}</h3>
+    <hr />
+    <form name="productForm" class="form-horizontal">
+        <div class="row">
+            <div class="form-group">
+                <label class="control-label col-md-2">Display Name</label>
+                <input class="form-control col-md-10" z-validate ng-model="vm.product.displayName " />
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">Category</label>
+                <select class="form-control col-md-10"
+                        ng-options="c.displayName for c in vm.categories"
+                        ng-model="vm.product.category"
+                        z-validate>
+                    <option value="">-- choose category --</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">Current Price</label>
+                <input class="form-control col-md-10" z-validate ng-model="vm.product.currentPrice" />
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">MSRP</label>
+                <input class="form-control col-md-10" z-validate ng-model="vm.product.msrp" />
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">Description</label>
+                <textarea class="form-control col-md-10" ng-model="vm.product.description"></textarea>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">ImageUrl</label>
+                <input class="form-control col-md-10" z-validate ng-model="vm.product.imageUrl" />
+            </div>
+            <div class="col-md-offset-2 col-md-10">
+                <img ng-src="{{vm.product.imageUrl}}" height="150" />
+            </div>
+        </div>
+    </form>
+</div>
+<p></p>
+<div class="form-group">
+    <div class="col-md-offset-2 col-md-10">
+        <input type="submit" value="Save" class="btn btn-default" />
+    </div>
+</div>
+

@@ -4,4 +4,8 @@
 if (!breeze.core.__isES5Supported) {
     throw new Error("This app only runs on modern ECMAScript 5+ browser. It won't run on < IE9");
 }
-angular.module('app', ['breeze.angular']);
+angular.module('app', [
+        'breeze.angular',   // tells breeze to use $q and $http
+        'breeze.directives' // breeze validation directive (zValidate)
+    ])
+    .constant('toastr', toastr);

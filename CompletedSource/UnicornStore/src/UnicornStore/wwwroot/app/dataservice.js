@@ -20,6 +20,7 @@
             counts:          {},
             deleteProduct:   deleteProduct,
             getProducts:     getProducts,
+            getProductById:  getProductById,
             hasChanges:      hasChanges,
             loadProducts:    loadProducts,
             ready:           ready,
@@ -96,12 +97,11 @@
 
         function getProductById(id, forceRemote) {
             var self = this;
-            var entityName = self.entityName;
             if (!forceRemote) {
                 // Check cache first (synchronous)
-                var entity = manager.getEntityByKey(entityName, id);
+                var entity = manager.getEntityByKey(productType, id);
                 if (entity && !entity.isPartial) {
-                    logger.info('Retrieved [' + entityName + '] id:' + entity.id + ' from cache.', entity);
+                    logger.info('Retrieved product w/ id:' + entity.id + ' from cache.', entity);
                     if (entity.entityAspect.entityState.isDeleted()) {
                         entity = null; // hide session marked-for-delete
                     }
@@ -110,36 +110,31 @@
                 }
             }
 
-            // It was not found in cache, so let's query for it.
-            // fetchEntityByKey will go remote because
-            // 3rd parm is false/undefined.
-            return manager.fetchEntityByKey(entityName, id)
-                .then(querySucceeded).catch(self.queryFailed);
+            // It was not found in cache or is partial so let's query for it.
+            return breeze.EntityQuery.from('products/' + id) // can't us Breeze query!
+                .using(manager).execute()
+                .catch(possible404)
+                .then(querySucceeded)
+                .catch(queryFailed);
 
             function querySucceeded(data) {
-                entity = data.entity;
+                entity = data.results[0]; //data.entity;
                 if (!entity) {
-                    logger.warning('Could not find [' + entityName + '] id:' + id, null);
+                    logger.warning('Could not find product with id:' + id, null);
                     return null;
                 }
                 setIsPartial(entity, false);
-                logger.info('Retrieved [' + entityName + '] id ' + entity.id + ' from remote data source', entity);
+                logger.info('Retrieved product with id ' + id + ' from remote data source', entity);
                 //zStorage.save();
                 return entity;
             }
 
-            function setIsPartial(entity, value) {
-                entity.isPartial = false;
-                // not a revertable property so remove from orginalValues
-                delete entity.entityAspect.originalValues['isPartial']; 
+            function possible404(error) {
+                return (error.status === 404) ?
+                    $q.when({ results: [] }) : // treat as if it succeeded
+                    $q.reject(error); // pass error along to next
             }
         }
-
-
-
-
-
-
 
         function hasChanges(){
             return manager.hasChanges();
@@ -165,6 +160,12 @@
             manager.clear();
             return getAllProducts()
                 .finally(function(){wip.resume();});
+        }
+
+        function setIsPartial(entity, value) {
+            entity.isPartial = false;
+            // not a revertable property so remove from orginalValues
+            delete entity.entityAspect.originalValues['isPartial'];
         }
 
         function sync() {

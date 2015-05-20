@@ -1,14 +1,26 @@
 ﻿<div ng-controller="manageProductsController as vm">
-    <table class="table">
-        <tr>
-            <th>DisplayName</th>
-            <th>CurrentPrice</th>
-            <th>MSRP</th>
-        </tr>
-        <tr ng-repeat="product in vm.products"> <!-- | filter:vm.productsFilter"> -->
-            <td>{{product.displayName}}</td>
-            <td>{{product.currentPrice | currency}}</td>
-            <td>{{product.msrp  | currency}}</td>
-        </tr>
-    </table>
+    <div class="container">
+        <div class="row-fluid">
+            <div class="col-md-5">
+                <table class="table">
+                    <tr>
+                        <th>DisplayName</th>
+                        <th>CurrentPrice</th>
+                        <th>MSRP</th>
+                    </tr>
+                    <tr ng-repeat="product in vm.products" ng-click="vm.selectProduct(product)">
+                        <td>{{product.displayName}}</td>
+                        <td>{{product.currentPrice | currency}}</td>
+                        <td>{{product.msrp  | currency}}</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-7">
+                <h3 ng-if="!vm.product" style="vertical-align:middle">
+                    <em>Select a product</em>
+                </h3>
+                <div ng-if="vm.product" ng-include="'app/manageProducts.detail.html'"></div>
+            </div>
+        </div>
+    </div>
 </div>

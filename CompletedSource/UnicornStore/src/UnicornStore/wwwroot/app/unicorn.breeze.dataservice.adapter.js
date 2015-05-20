@@ -1,0 +1,166 @@
+/*
+ * MVC6 UnicornStore Breeze DataService Adapter
+ * prototype for an adapter that talks to an ASP.NET MVC 6 server
+ *
+ * REQUIRES breeze.labs.dataservice.abstractrest.js v.0.6.0+
+ *
+ * This adapter cannot get metadata from the server because server does not provide metadata.
+ *
+ * Typical usage in Angular
+ *    // configure breeze to use this dataservice adapter
+ *    var dsAdapter = breeze.config.initializeAdapterInstance('dataService', 'mvc6-unicorn', true);
+ *
+ *
+ * This adapter has its own JsonResultsAdapter which you could replace.
+ *
+ * By default this adapter permits multiple entities to be saved at a time,
+ * each in a separate request that this adapter fires off in parallel.
+ * and waits for all to complete.
+ *
+ * If 'saveOnlyOne' == true, the adapter throws an exception
+ * when asked to save more than one entity at a time.
+ *
+ * Copyright 2015 IdeaBlade, Inc.  All Rights Reserved.
+ * Licensed under the MIT License
+ * http://opensource.org/licenses/mit-license.php
+ * Author: Ward Bell
+ */
+(function (definition) {
+    if (typeof breeze === "object") {
+        definition(breeze);
+    } else if (typeof require === "function" && typeof exports === "object" && typeof module === "object") {
+        // CommonJS or Node
+        var b = require('breeze');
+        definition(b);
+    } else if (typeof define === "function" && define["amd"]) {
+        // Requirejs / AMD
+        define(['breeze'], definition);
+    } else {
+        throw new Error("Can't find breeze");
+    }
+}(function (breeze) {
+    "use strict";
+
+    var ctor = function () {
+        this.name = "mvc6-unicorn";
+    };
+    ctor.prototype.initialize = typeInitialize;
+
+    function typeInitialize() {
+        // Delay setting the prototype until we're sure AbstractRestDataServiceAdapter is loaded
+        var proto = breeze.AbstractRestDataServiceAdapter.prototype;
+        proto = breeze.core.extend(ctor.prototype, proto);
+
+        proto._createErrorFromResponse = _createErrorFromResponse;
+        proto._createChangeRequest = _createChangeRequest;
+        proto._createJsonResultsAdapter = _createJsonResultsAdapter;
+
+        this.initialize(); // the revised initialize()
+    }
+
+    breeze.config.registerAdapter("dataService", ctor);
+
+    /////////////////
+    // Create error object for both query and save responses.
+    // A method on the adapter (`this`)
+    // 'context' can help differentiate query and save
+    // 'errorEntity' only defined for save response
+    function _createErrorFromResponse(response, url, context, errorEntity) {
+        var err = new Error();
+        err.response = response;
+        var data = response.data || {};
+        if (url) { err.url = url; }
+        err.status =  data.code || response.status || '???';
+        err.statusText = response.statusText || err.status;
+        err.message =  data.error || response.message || response.error || err.statusText;
+        this._catchNoConnectionError(err);
+        return err;
+    }
+
+    function _createJsonResultsAdapter() {
+
+        var dataServiceAdapter = this;
+        return new breeze.JsonResultsAdapter({
+            name: dataServiceAdapter.name + "_default",
+            visitNode: visitNode
+        });
+
+        function visitNode(node, mappingContext, nodeContext) {
+            if (node == null) return {};
+            // mappingContext.entityType could be set for a queryResult
+            // node.$entityType set when node is from a change response (see _processSavedEntity)
+            var entityType =  mappingContext.entityType || node.$entityType ||
+                dataServiceAdapter._getEntityTypeFromMappingContext(mappingContext);
+
+            if (!entityType) {
+                var entityTypeName = breeze.MetadataStore.normalizeTypeName(node.$type);
+                var entityType = entityTypeName && mappingContext.metadataStore._getEntityType(entityTypeName, true);
+            }
+            var propertyName = nodeContext.propertyName;
+            var ignore = propertyName && propertyName.substr(0, 1) === "$";
+            return {
+                entityType: entityType,
+                nodeId: node.$id,
+                nodeRefId: node.$ref,
+                ignore: ignore
+            };
+        }
+    }
+
+    function _createChangeRequest(saveContext, entity, index) {
+        var data, rawEntity, request;
+        var type = entity.entityType;
+        var rn = type.defaultResourceName;
+        if (!rn) {
+            throw new Error("Missing defaultResourceName for type " + type.name);
+        }
+
+        var adapter = saveContext.adapter;
+        var entityManager = saveContext.entityManager;
+        var helper = entityManager.helper;
+        var baseUrl = entityManager.dataService.serviceName + rn;
+        var tempKeys = saveContext.tempKeys;
+
+        var aspect = entity.entityAspect;
+        var key = aspect.getKey();
+        var state = aspect.entityState;
+
+        if (state.isAdded()) {
+            if (type.autoGeneratedKeyType !== breeze.AutoGeneratedKeyType.None) {
+                tempKeys[index] = key; // INDEX! DO NOT PUSH. Gaps expected!
+            }
+            rawEntity = helper.unwrapInstance(entity, adapter._transformSaveValue);
+            // Don't send the temp key value or ZUMO will use it!
+            // Delete that property so ZUMO generates a good permanent key
+            delete rawEntity[type.keyProperties[0].name];
+            data = adapter._serializeToJson(rawEntity);
+            request = {
+                requestUri: baseUrl,
+                method: "POST",
+                data: data
+            };
+
+        } else if (state.isModified()) {
+            rawEntity = helper.unwrapChangedValues(entity, entityManager.metadataStore, adapter._transformSaveValue);
+            data = adapter._serializeToJson(rawEntity);
+            request = {
+                requestUri: baseUrl+'/'+ key.values[0],
+                method: "PATCH",
+                data: data
+            };
+
+        } else if (state.isDeleted()) {
+            request = {
+                requestUri:  baseUrl+'/'+ key.values[0],
+                method: "DELETE",
+                data: null
+            };
+
+        } else {
+            throw new Error("Cannot save an entity whose EntityState is " + state.name);
+        }
+
+        return request;
+    }
+
+}));

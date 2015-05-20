@@ -4,8 +4,8 @@
     angular.module('app')
         .factory('logger', logger);
 
-    logger.$inject = ['$log']
-    function logger($log) {
+    logger.$inject = ['$log', 'toastr']
+    function logger($log, toastr) {
         return {
             showToasts: true,
 

@@ -7,8 +7,8 @@
     function manageProductsController($scope, $timeout, dataservice, wip) {
         var vm = this;
         vm.categories = [];
-        vm.currentProduct;
         vm.isBusy = true;
+        vm.product;
         vm.products = [];
         vm.wipMessages = [];
 
@@ -19,8 +19,9 @@
         function onReady(){
             // members that depend on a ready dataservice
             vm.addProduct = addProduct;
-            vm.counts = dataservice.counts;
+            vm.categories = dataservice.categories;
             vm.deleteProduct = deleteProduct;
+            vm.selectProduct = selectProduct;
             vm.refresh = refresh;
             vm.reset = reset;
             vm.sync = sync;
@@ -65,6 +66,7 @@
 
         function loadProducts(){
             vm.isBusy = true;
+            vm.product = null;
             return dataservice.loadProducts()
             .then(querySuccess, handleError);
         }
@@ -88,7 +90,17 @@
 
         function reset(){
             vm.isBusy = true;
+            vm.product = null;
             return dataservice.reset().then(querySuccess, handleError);
+        }
+
+        function selectProduct(product) {
+            if (product && (product.isPartial || product != vm.product)) {
+                dataservice.getProductById(product.productId)
+                .then(function (product) {
+                    vm.product = product;
+                })
+            }
         }
 
         function sync(){

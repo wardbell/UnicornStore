@@ -32,3 +32,5 @@ textarea {
         z-index: 10 !important;
     }
 }
+
+[ng-click], [data-ng-click]{cursor: pointer}

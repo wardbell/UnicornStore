@@ -29,6 +29,8 @@ namespace UnicornStore
             // Handle circular references, e.g., Product-> Category -> Products
             jsonOutputFormatter.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.Objects;
 
+            // Breeze client wants the typename ($type)
+            jsonOutputFormatter.SerializerSettings.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Objects;
             mvcOptions.OutputFormatters.RemoveTypesOf<JsonOutputFormatter>();
             mvcOptions.OutputFormatters.Insert(0, jsonOutputFormatter);
         }

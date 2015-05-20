@@ -7,6 +7,10 @@
 
     entityManagerFactory.$inject = ['breeze', 'model', 'wip-service'];
     function entityManagerFactory(breeze, model, wip) {
+
+        // configure breeze to use a special MVC6 dataservice adapter
+        breeze.config.initializeAdapterInstance('dataService', 'mvc6-unicorn', true);
+
         var manager;
         var emFactory =  {
             getEntityManager: getEntityManager
