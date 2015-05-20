@@ -26,6 +26,7 @@
             ready:           ready,
             reset:           reset,
             revertEntity:    revertEntity,
+            saveEntity:      saveEntity,
             sync:            sync
         };
 
@@ -153,13 +154,10 @@
             return $q.reject(err); // so downstream listener gets it.
         }
 
-        // revert changes to entity; return true if entity still attached
+        // revert changes to entity; return entity for chaining
         function revertEntity(entity) {
-            if (entity) {
-                entity.entityAspect.rejectChanges();
-                return !entity.entityAspect.entityState.isDetached();
-            }
-            return false;
+            entity && entity.entityAspect.rejectChanges();
+            return entity;
         }
 
         // Clear everything local and reload from server.
@@ -177,6 +175,28 @@
             delete entity.entityAspect.originalValues['isPartial'];
         }
 
+        function saveEntity(entity) {
+            if (!entity) {
+                logger.info('no entity to save');
+                return $q.when(null);
+            }
+            var type = entity.entityType;
+            var keyName = type.keyProperties[0].name;
+            var entityName = type.shortName + ' ' + keyName + ' ' + entity[keyName];
+            return manager.saveChanges([entity])
+                .then(function (saveResult) {
+                    
+                    var saved = saveResult.entities[0];
+                    if (saved) {
+                        logger.success('breeze saved ' + entityName);
+                    } else {
+                        logger.info('nothing to save for ' + entityName);
+                    }
+                    return saved;
+                })
+                .catch(saveFailed);
+        }
+
         function sync() {
             return manager.saveChanges()
                 .then(function (){
@@ -190,7 +210,7 @@
                 var msg = 'Save failed: ' +
                     breeze.saveErrorMessageService.getErrorMessage(error);
                 error.message = msg;
-                throw error; // for downstream callers to see
+                $q.reject(error); // for downstream callers to see
             }
         }
 

@@ -130,9 +130,6 @@
                 tempKeys[index] = key; // INDEX! DO NOT PUSH. Gaps expected!
             }
             rawEntity = helper.unwrapInstance(entity, adapter._transformSaveValue);
-            // Don't send the temp key value or ZUMO will use it!
-            // Delete that property so ZUMO generates a good permanent key
-            delete rawEntity[type.keyProperties[0].name];
             data = adapter._serializeToJson(rawEntity);
             request = {
                 requestUri: baseUrl,
@@ -141,11 +138,14 @@
             };
 
         } else if (state.isModified()) {
-            rawEntity = helper.unwrapChangedValues(entity, entityManager.metadataStore, adapter._transformSaveValue);
+            // All current values ... and only the current values (not originalValueMap)
+            rawEntity = helper.unwrapInstance(entity, adapter._transformSaveValue);
+            // For Patch, we would want the changed values
+            // rawEntity = helper.unwrapChangedValues(entity, entityManager.metadataStore, adapter._transformSaveValue);
             data = adapter._serializeToJson(rawEntity);
             request = {
-                requestUri: baseUrl+'/'+ key.values[0],
-                method: "PATCH",
+                requestUri: baseUrl, // For PATCH, supply the key:  + '/' + key.values[0],
+                method: "PUT", // "PATCH" when server supports it.
                 data: data
             };
 

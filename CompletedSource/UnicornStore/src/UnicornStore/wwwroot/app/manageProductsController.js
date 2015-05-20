@@ -106,21 +106,23 @@
         }
       
         function revertProduct() {
-            var product = vm.product;
-            if (product && !dataservice.revertEntity(product)) {
-                vm.product = null;
+            var product = dataservice.revertEntity(vm.product);
+            cleanupIfProductDetached(product);
+        }
+
+        function cleanupIfProductDetached(product) {
+            if (product && product.entityAspect.entityState.isDetached()) {
+                if (vm.product === product) { vm.product = null; }
                 var ix = vm.products.indexOf(product);
                 vm.products.splice(ix, ix < 0 ? 0 : 1);
             }
         }
 
         function saveProduct() {
-            var product = vm.product;
-            if (product) {
-                alert('Someday will save Product w/ id ' + product.productId);
-            } else {
-                alert('No product to save');
-            }
+            dataservice.saveEntity(vm.product)
+                .then(function (product) {
+                    cleanupIfProductDetached(product);
+                });
         }
 
         function selectProduct(product) {

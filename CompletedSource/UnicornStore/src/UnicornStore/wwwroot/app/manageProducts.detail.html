@@ -17,11 +17,11 @@
             </div>
             <div class="form-group">
                 <label class="control-label col-md-2">Current Price</label>
-                <input class="form-control col-md-10" z-validate ng-model="vm.product.currentPrice" />
+                <input class="form-control col-md-10" z-validate ng-model="vm.product.currentPrice" ng-model-options="{ updateOn: 'blur' }"/>
             </div>
             <div class="form-group">
                 <label class="control-label col-md-2">MSRP</label>
-                <input class="form-control col-md-10" z-validate ng-model="vm.product.msrp" />
+                <input class="form-control col-md-10" z-validate ng-model="vm.product.msrp" ng-model-options="{ updateOn: 'blur' }" />
             </div>
             <div class="form-group">
                 <label class="control-label col-md-2">Description</label>
@@ -32,7 +32,7 @@
                 <input class="form-control col-md-10" z-validate ng-model="vm.product.imageUrl" />
             </div>
             <div class="col-md-offset-2 col-md-10">
-                <img ng-src="{{vm.product.imageUrl}}" height="150" />
+                <img src="{{vm.product.imageUrl}}" height="150" />
             </div>
         </div>
     </form>
