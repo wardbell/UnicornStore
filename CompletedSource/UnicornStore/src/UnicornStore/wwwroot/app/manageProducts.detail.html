@@ -1,6 +1,5 @@
-﻿<div >
+﻿<div>
     <h3>{{vm.product.productId}} - {{vm.product.displayName}}</h3>
-    <hr />
     <form name="productForm" class="form-horizontal">
         <div class="row">
             <div class="form-group">
@@ -41,7 +40,8 @@
 <p></p>
 <div class="form-group">
     <div class="col-md-offset-2 col-md-10">
-        <input type="submit" value="Save" class="btn btn-default" />
+        <button ng-click="vm.saveProduct()" ng-disabled="!vm.productHasChanges" class="btn btn-success" >Save</button>
+        <button ng-click="vm.revertProduct()" ng-disabled="!vm.productHasChanges" class="btn btn-default">Revert</button>
     </div>
 </div>
 

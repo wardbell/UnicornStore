@@ -28,4 +28,4 @@
 /// <reference path="lib/toastr/toastr.js" />
 /// <reference path="app/logger.js" />
 /// <reference path="app/dataservice.js" />
-/// <reference path="app/unicorn.breeze..dataservice.adapter.js" />
+/// <reference path="app/unicorn.breeze.dataservice.adapter.js" />

@@ -34,3 +34,8 @@ textarea {
 }
 
 [ng-click], [data-ng-click]{cursor: pointer}
+
+.Added {background-color: lightseagreen}
+.Unchanged {background-color: white}
+.Modified {background-color: lightyellow}
+.Deleted {background-color: lightcoral}

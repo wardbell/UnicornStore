@@ -25,6 +25,7 @@
             loadProducts:    loadProducts,
             ready:           ready,
             reset:           reset,
+            revertEntity:    revertEntity,
             sync:            sync
         };
 
@@ -101,17 +102,16 @@
                 // Check cache first (synchronous)
                 var entity = manager.getEntityByKey(productType, id);
                 if (entity && !entity.isPartial) {
-                    logger.info('Retrieved product w/ id:' + entity.id + ' from cache.', entity);
+                    logger.info('Retrieved product w/ id:' + id + ' from cache.', entity);
                     if (entity.entityAspect.entityState.isDeleted()) {
                         entity = null; // hide session marked-for-delete
                     }
-                    // Should not need to call $apply because it is synchronous
                     return $q.when(entity);
                 }
             }
 
-            // It was not found in cache or is partial so let's query for it.
-            return breeze.EntityQuery.from('products/' + id) // can't us Breeze query!
+            // It was not found in cache or is partial so query for it.
+            return breeze.EntityQuery.from('products/' + id) // can't use Breeze query!
                 .using(manager).execute()
                 .catch(possible404)
                 .then(querySucceeded)
@@ -151,6 +151,15 @@
             err += '\nIs the server running?';
             logger.error(err)
             return $q.reject(err); // so downstream listener gets it.
+        }
+
+        // revert changes to entity; return true if entity still attached
+        function revertEntity(entity) {
+            if (entity) {
+                entity.entityAspect.rejectChanges();
+                return !entity.entityAspect.entityState.isDetached();
+            }
+            return false;
         }
 
         // Clear everything local and reload from server.

@@ -21,11 +21,22 @@
             vm.addProduct = addProduct;
             vm.categories = dataservice.categories;
             vm.deleteProduct = deleteProduct;
-            vm.selectProduct = selectProduct;
             vm.refresh = refresh;
-            vm.reset = reset;
-            vm.sync = sync;
+            vm.revertProduct = revertProduct;
+            vm.saveProduct = saveProduct;
+            vm.selectProduct = selectProduct;
 
+            // add calculated properties to vm
+            Object.defineProperty(vm, 'productHasChanges', {
+                get: function () {
+                    return vm.product && !vm.product.entityAspect.entityState.isUnchanged();
+                }
+            });
+            Object.defineProperty(vm, 'productState', {
+                get: function () {
+                    return vm.product && vm.product.entityAspect.entityState.name;
+                }
+            })
             loadProducts(); // initial data load          
         }
 
@@ -92,6 +103,24 @@
             vm.isBusy = true;
             vm.product = null;
             return dataservice.reset().then(querySuccess, handleError);
+        }
+      
+        function revertProduct() {
+            var product = vm.product;
+            if (product && !dataservice.revertEntity(product)) {
+                vm.product = null;
+                var ix = vm.products.indexOf(product);
+                vm.products.splice(ix, ix < 0 ? 0 : 1);
+            }
+        }
+
+        function saveProduct() {
+            var product = vm.product;
+            if (product) {
+                alert('Someday will save Product w/ id ' + product.productId);
+            } else {
+                alert('No product to save');
+            }
         }
 
         function selectProduct(product) {
