@@ -188,6 +188,7 @@
                     
                     var saved = saveResult.entities[0];
                     if (saved) {
+                        wip.stash();
                         logger.success('breeze saved ' + entityName);
                     } else {
                         logger.info('nothing to save for ' + entityName);

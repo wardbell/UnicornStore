@@ -51,7 +51,6 @@
         var proto = breeze.AbstractRestDataServiceAdapter.prototype;
         proto = breeze.core.extend(ctor.prototype, proto);
 
-        proto._createErrorFromResponse = _createErrorFromResponse;
         proto._createChangeRequest = _createChangeRequest;
         proto._createJsonResultsAdapter = _createJsonResultsAdapter;
 
@@ -59,23 +58,6 @@
     }
 
     breeze.config.registerAdapter("dataService", ctor);
-
-    /////////////////
-    // Create error object for both query and save responses.
-    // A method on the adapter (`this`)
-    // 'context' can help differentiate query and save
-    // 'errorEntity' only defined for save response
-    function _createErrorFromResponse(response, url, context, errorEntity) {
-        var err = new Error();
-        err.response = response;
-        var data = response.data || {};
-        if (url) { err.url = url; }
-        err.status =  data.code || response.status || '???';
-        err.statusText = response.statusText || err.status;
-        err.message =  data.error || response.message || response.error || err.statusText;
-        this._catchNoConnectionError(err);
-        return err;
-    }
 
     function _createJsonResultsAdapter() {
 

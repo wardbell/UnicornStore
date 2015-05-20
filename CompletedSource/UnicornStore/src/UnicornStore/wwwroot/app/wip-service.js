@@ -18,6 +18,7 @@
             isStopped: function() {return !!stopped;},
             restore: restore,
             resume: resume,
+            stash: stash,
             stashCount: function() {return stashCount;},
             start: resume, //alias
             stop: stop
