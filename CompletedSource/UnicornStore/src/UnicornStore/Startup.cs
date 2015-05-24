@@ -135,6 +135,8 @@ namespace UnicornStore
             app.UseMyMiddleware();
             //app.UseMiddleware<MyMiddlewareClass>(); // a different approach
 
+            app.UseFakeUser(); // because 3rd party auth isn't working in Sweden
+
             // Add MVC to the request pipeline.
             app.UseMvc(routes =>
             {
