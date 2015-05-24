@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Data.Entity;
 using Microsoft.Data.Entity.Infrastructure;
 
@@ -42,7 +44,21 @@ namespace UnicornStore.AspNet.Models.UnicornStore
             builder.Entity<CartItem>().Property<DateTime>("LastUpdated");
         }
 
+        // Prefer this async version
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            PrepSaveChanges();
+            return base.SaveChangesAsync(cancellationToken);
+        }
+
+        // Sync version. Try to avoid using this
         public override int SaveChanges()
+        {
+            PrepSaveChanges();
+            return base.SaveChanges();
+        }
+
+        private void PrepSaveChanges()
         {
             this.ChangeTracker.DetectChanges();
 
@@ -53,8 +69,6 @@ namespace UnicornStore.AspNet.Models.UnicornStore
             {
                 entry.Property("LastUpdated").CurrentValue = DateTime.UtcNow;
             }
-
-            return base.SaveChanges();
         }
     }
 }

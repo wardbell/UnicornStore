@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 using UnicornStore.AspNet.Models.UnicornStore;
 
@@ -21,17 +22,19 @@ namespace UnicornStore.AspNet.Controllers
         }
 
         [HttpGet]
-        // IQueryable doesn't really work. 
+        // IQueryable doesn't work; treated as IEnumerable 
         // This filters nothing: http://localhost:5000/api/products?$filter=ProductId%20eq%202
+        // Todo: make async like the other methods of this controller.
+        // [EnableQueryable] // doesn't exist (yet)
         public IQueryable<Product> Products() 
         {
             return db.Products;
         }
 
         [HttpGet("{id:int}", Name = "ProductsGetByIdRoute")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var product = db.Products.FirstOrDefault(c => c.ProductId == id);
+            var product = await db.Products.FirstOrDefaultAsync(c => c.ProductId == id);
             if (product == null)
             {
                 return HttpNotFound();
@@ -40,30 +43,33 @@ namespace UnicornStore.AspNet.Controllers
         }
 
         [HttpGet("First3Products")]
-        public IEnumerable<Product> First3Products()
+        public async Task<IEnumerable<Product>> First3Products()
         {
-            return db.Products.Take(3);
+            return await db.Products.Take(3).ToListAsync();
         }
 
         [HttpGet("Summaries")]
-        public IEnumerable<object> Summaries()
+        public async Task<IEnumerable<object>> Summaries()
         {
-            return db.Products.Select(p => new { p.ProductId, p.DisplayName, p.CurrentPrice, p.MSRP });
+            return await db.Products
+                .Select(p => new { p.ProductId, p.DisplayName, p.CurrentPrice, p.MSRP })
+                .ToListAsync();
         }
 
         [HttpGet("ByCategory/{id:int}")]
-        public IEnumerable<Product> ProductsByCategory(int id)
+        public async Task<IEnumerable<Product>> ProductsByCategory(int id)
         {
-            return db.Products
+            return await db.Products
                 .Where(p => p.CategoryId == id)
-                .Include(p => p.Category);
+                .Include(p => p.Category)
+                .ToListAsync();
         }
 
 
         [HttpPost]
         //[Authorize] // A MUST ... but leaving out for demo purposes
         //[ValidateAntiForgeryToken] // Todo: support these tokens to prevent XSRF
-        public IActionResult CreateProduct([FromBody] Product product)
+        public async Task<IActionResult> CreateProduct([FromBody] Product product)
         {
             if (!ModelState.IsValid)
             {
@@ -72,7 +78,7 @@ namespace UnicornStore.AspNet.Controllers
             else
             {
                 db.Products.Add(product);
-                db.SaveChanges();
+                await db.SaveChangesAsync();
 
                 string url = Url.RouteUrl("ProductsGetByIdRoute", new { id = product.ProductId },
                     Request.Scheme, Request.Host.ToUriComponent());
@@ -86,7 +92,7 @@ namespace UnicornStore.AspNet.Controllers
         [HttpPut]
         //[Authorize] // A MUST ... but leaving out for demo purposes
         //[ValidateAntiForgeryToken]
-        public IActionResult UpdateProduct([FromBody] Product product)
+        public async Task<IActionResult> UpdateProduct([FromBody] Product product)
         {
             if (!ModelState.IsValid)
             {
@@ -102,7 +108,7 @@ namespace UnicornStore.AspNet.Controllers
             {
                 // Todo: validation ... referencing the original product as necessary
                 db.Products.Update(product);
-                db.SaveChanges();
+                await db.SaveChangesAsync();
                 return new ObjectResult(product);
             }
         }
@@ -110,7 +116,7 @@ namespace UnicornStore.AspNet.Controllers
         [HttpDelete("{id:int}")]
         //[Authorize] // A MUST ... but leaving out for demo purposes
         //[ValidateAntiForgeryToken]
-        public IActionResult DeleteProduct(int id)
+        public async Task<IActionResult> DeleteProduct(int id)
         {
             if (id <= MAX_ORIGINAL_ID)
             {
@@ -124,7 +130,7 @@ namespace UnicornStore.AspNet.Controllers
                 return HttpNotFound();
             }
             db.Products.Remove(product);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
             return new HttpStatusCodeResult(204); // No Content
         }
 

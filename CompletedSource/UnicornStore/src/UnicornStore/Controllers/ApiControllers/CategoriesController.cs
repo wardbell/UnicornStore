@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 using UnicornStore.AspNet.Models.UnicornStore;
 
@@ -18,15 +19,15 @@ namespace UnicornStore.AspNet.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Category> GetAllCategories() 
+        public async Task<IEnumerable<Category>> GetAllCategories() 
         {
-            return db.Categories;
+            return await db.Categories.ToListAsync();
         }
 
         [HttpGet("{id:int}")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var cat = db.Categories.FirstOrDefault(c => c.CategoryId == id);
+            var cat = await db.Categories.FirstOrDefaultAsync(c => c.CategoryId == id);
             if (cat == null)
             {
                 return HttpNotFound();

@@ -1,4 +1,6 @@
-﻿using Microsoft.Data.Entity;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.Data.Entity;
 
 namespace UnicornStore.AspNet.Models.UnicornStore
 {
@@ -10,6 +12,7 @@ namespace UnicornStore.AspNet.Models.UnicornStore
         DbSet<Product> Products { get; set; }
         DbSet<WebsiteAd> WebsiteAds { get; set; }
 
-        int SaveChanges();
+        //int SaveChanges();
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken));
     }
 }
