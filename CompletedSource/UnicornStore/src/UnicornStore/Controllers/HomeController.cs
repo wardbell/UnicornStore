@@ -33,8 +33,6 @@ namespace UnicornStore.AspNet.Controllers
 
         public IActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
-
             return View();
         }
 
