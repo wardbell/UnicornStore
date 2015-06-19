@@ -3,8 +3,8 @@
     angular.module('app')
         .controller('manageProductsController', manageProductsController);
 
-    manageProductsController.$inject = ['$scope', '$timeout', 'dataservice', 'wip-service'];
-    function manageProductsController($scope, $timeout, dataservice, wip) {
+    manageProductsController.$inject = ['$scope', '$timeout', 'dataservice', 'logger', 'wip-service'];
+    function manageProductsController($scope, $timeout, dataservice, logger, wip) {
         var vm = this;
         vm.categories = [];
         vm.isBusy = true;
@@ -70,9 +70,8 @@
 
         function handleError(error) {
             vm.isBusy = false;  
-            var err = typeof error === 'string'? error : error.message;
-            vm.errorLog.push((vm.errorLog.length+1) + ': ' + 
-                (err || 'unknown error'));
+            var err = typeof error === 'string'? error : (error.message || 'unknown error');
+            logger.error(err);
         }
 
         function loadProducts(){
