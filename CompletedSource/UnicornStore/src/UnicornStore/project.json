@@ -27,9 +27,7 @@
         "Microsoft.Framework.CodeGenerators.Mvc": "1.0.0-beta5",
         "Microsoft.Framework.Logging": "1.0.0-beta5",
         "Microsoft.Framework.Logging.Console": "1.0.0-beta5",
-        "kmon": "0.4.0",
-        "EntityFramework": "6.1.3"
-
+        "kmon": "0.4.0"
     },
 
     "frameworks": {
