@@ -19,10 +19,10 @@ namespace UnicornStore.AspNet.Models.Identity
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<PreApproval>().ForRelational().Table("AspNetPreApprovals");
+            builder.Entity<PreApproval>().Table("AspNetPreApprovals");
             builder.Entity<PreApproval>().Key(p => new { p.UserEmail, p.Role });
 
-            builder.Entity<UserAddress>().ForRelational().Table("AspNetUserAddresses");
+            builder.Entity<UserAddress>().Table("AspNetUserAddresses");
             builder.Entity<UserAddress>().ConfigureAddress();
         }
     }

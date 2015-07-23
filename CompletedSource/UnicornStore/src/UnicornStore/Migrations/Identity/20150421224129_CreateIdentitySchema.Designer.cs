@@ -19,13 +19,15 @@ namespace UnicornStore.AspNet.Migrations.Identity
         {
             get { return "7.0.0-beta4-12914"; }
         }
-        
-        public override IModel Target
+
+        //public override IModel Target
+        //{
+        //    get
+        //    {
+        public override void BuildTargetModel(ModelBuilder builder)
         {
-            get
-            {
-                var builder = new BasicModelBuilder()
-                    .Annotation("SqlServer:ValueGeneration", "Identity");
+            //var builder = new BasicModelBuilder()
+            //        .Annotation("SqlServer:ValueGeneration", "Identity");
                 
                 builder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityRole", b =>
                     {
@@ -160,8 +162,8 @@ namespace UnicornStore.AspNet.Migrations.Identity
                         b.ForeignKey("UnicornStore.AspNet.Models.Identity.ApplicationUser", "UserId");
                     });
                 
-                return builder.Model;
+                //return builder.Model;
             }
-        }
+        //}
     }
 }

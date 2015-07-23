@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNet.Mvc;
 using UnicornStore.AspNet.Models.UnicornStore;
+using Microsoft.Data.Entity;
 
 namespace UnicornStore.AspNet.Controllers
 {

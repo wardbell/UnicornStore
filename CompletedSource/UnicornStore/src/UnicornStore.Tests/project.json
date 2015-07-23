@@ -6,8 +6,8 @@
     "projectUrl": "",
     "licenseUrl": "",
     "dependencies": {
-        "EntityFramework.InMemory": "7.0.0-beta4",
-        "xunit.runner.aspnet": "1.0.0-beta4",
+        "EntityFramework.InMemory": "7.0.0-beta5",
+        "xunit.runner.aspnet": "1.0.0-beta5",
         "UnicornStore": ""
     },
     "commands": {
@@ -17,10 +17,10 @@
         "dnx451": { },
         "dnxcore50": {
             "dependencies": {
-                "System.Collections": "4.0.10-beta-22816",
-                "System.Linq": "4.0.0-beta-22816",
-                "System.Threading": "4.0.10-beta-22816",
-                "Microsoft.CSharp": "4.0.0-beta-22816"
+                "System.Collections": "4.0.10-beta",
+                "System.Linq": "4.0.0-beta",
+                "System.Threading": "4.0.10-beta",
+                "Microsoft.CSharp": "4.0.0-beta"
             }
         }
     }

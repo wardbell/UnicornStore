@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNet.Mvc;
 using Microsoft.Framework.DependencyInjection;
 using Newtonsoft.Json.Serialization;
+using System.Linq;
 
 namespace UnicornStore
 {
@@ -31,7 +32,14 @@ namespace UnicornStore
 
             // Breeze client wants the typename ($type)
             jsonOutputFormatter.SerializerSettings.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Objects;
-            mvcOptions.OutputFormatters.RemoveTypesOf<JsonOutputFormatter>();
+
+            //mvcOptions.OutputFormatters.RemoveTypesOf<JsonOutputFormatter>();
+            var fmt = mvcOptions.OutputFormatters.SingleOrDefault(f => f is JsonOutputFormatter);
+            if (fmt != null)
+            {
+                mvcOptions.OutputFormatters.Remove(fmt);
+            }
+
             mvcOptions.OutputFormatters.Insert(0, jsonOutputFormatter);
         }
     }

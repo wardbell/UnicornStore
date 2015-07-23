@@ -164,6 +164,8 @@ node_modules/
 bower_components/
 **/wwwroot/lib/
 
+**/.settings/launch.json
+
 # RIA/Silverlight projects
 Generated_Code/
 

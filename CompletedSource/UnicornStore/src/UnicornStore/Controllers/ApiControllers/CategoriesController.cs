@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 using UnicornStore.AspNet.Models.UnicornStore;
+using Microsoft.Data.Entity;
 
 namespace UnicornStore.AspNet.Controllers
 {

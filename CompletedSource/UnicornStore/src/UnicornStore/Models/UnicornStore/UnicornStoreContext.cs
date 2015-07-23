@@ -9,7 +9,8 @@ namespace UnicornStore.AspNet.Models.UnicornStore
 {
     public class UnicornStoreContext : DbContext, IUnicornStoreContext
     {
-        public UnicornStoreContext(DbContextOptions<UnicornStoreContext> options)
+        // Beta6 will revert back to DbContextOptions
+        public UnicornStoreContext(EntityOptions<UnicornStoreContext> options)
             : base(options)
         { }
 
